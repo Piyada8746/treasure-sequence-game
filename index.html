@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>นักล่าสมบัติ: ไขปริศนาลำดับ</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#10372f;--bg2:#1d5a45;--card:#fff7e0;--ink:#3b2a14;--gold:#f6b93b;--gold2:#d68910;--ok:#2e9e5b;--soft:#ffe0a8;--bad:#e8892b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Mali','Noto Sans Thai',Tahoma,sans-serif;background:radial-gradient(circle at 20% 10%,var(--bg2),var(--bg1) 70%);color:var(--ink);background-attachment:fixed}
+#wrap{max-width:720px;margin:0 auto;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center;color:#ffe9b0;font-weight:700;font-size:15px;gap:8px;flex-wrap:wrap}
+.pill{background:#0006;padding:6px 12px;border-radius:20px}
+.card{background:var(--card);border:4px solid var(--gold2);border-radius:20px;padding:18px;margin-top:12px;box-shadow:0 8px 0 #0004;animation:pop .4s}
+h1,h2{margin:4px 0 8px}
+h1{font-size:26px}h2{font-size:21px}
+p{line-height:1.6;margin:6px 0}
+.chars{display:flex;justify-content:center;gap:14px;margin:6px 0}
+.ch{text-align:center;font-size:12px;font-weight:700;animation:bob 2s ease-in-out infinite}
+.ch:nth-child(2){animation-delay:.4s}.ch:nth-child(3){animation-delay:.8s}
+.ch .e{font-size:46px;display:block;filter:drop-shadow(0 4px 0 #0003)}
+.ch .t{background:var(--gold);border-radius:10px;padding:1px 8px}
+.say{display:flex;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:10px;margin-top:10px;border:2px dashed var(--gold2)}
+.say .e{font-size:36px;animation:bob 2s infinite}
+.btn{font-family:inherit;font-size:17px;font-weight:700;border:0;border-radius:14px;padding:12px 20px;cursor:pointer;background:linear-gradient(var(--gold),var(--gold2));color:#3b2a14;box-shadow:0 5px 0 #8a5a0a;margin-top:12px;transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #8a5a0a}
+.chests{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:14px 0}
+.chest{font-size:64px;background:none;border:0;cursor:pointer;animation:bob 1.8s ease-in-out infinite;filter:drop-shadow(0 6px 0 #0003)}
+.chest:nth-child(2){animation-delay:.3s}.chest:nth-child(3){animation-delay:.6s}
+.chest:hover{transform:scale(1.15) rotate(-6deg)}
+.chest.done{animation:none;opacity:.35;cursor:default;transform:none}
+.q{font-size:22px;font-weight:700;background:#fff;border-radius:14px;padding:14px;border:2px solid var(--soft);line-height:1.6}
+.seq{font-size:28px;letter-spacing:1px;color:#a2540d;text-align:center;display:block;margin:6px 0}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.key{font-family:inherit;font-size:17px;font-weight:600;background:#fff;border:3px solid var(--gold2);border-radius:14px;padding:12px 8px;cursor:pointer;color:var(--ink);transition:.15s}
+.key:hover:not(:disabled){background:var(--soft);transform:translateY(-2px)}
+.key.right{background:#c9f2d8;border-color:var(--ok);animation:pop .4s}
+.key.miss{background:#ffe3c2;border-color:var(--bad)}
+.key:disabled{cursor:default}
+.fb{margin-top:12px;padding:12px;border-radius:14px;animation:pop .4s}
+.fb.ok{background:#d8f6e3;border:2px solid var(--ok)}
+.fb.no{background:#fff0d9;border:2px solid var(--bad)}
+.bar{height:12px;background:#0004;border-radius:8px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#ffe27a);transition:width .6s}
+.door{font-size:90px;text-align:center;animation:glow 1.5s infinite alternate}
+.def{background:#fff;border-left:6px solid var(--gold2);padding:10px 14px;border-radius:10px;margin:8px 0}
+.big{font-size:56px;text-align:center;animation:spin .8s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+@keyframes glow{from{filter:drop-shadow(0 0 4px gold)}to{filter:drop-shadow(0 0 26px gold)}}
+@keyframes spin{from{transform:rotate(-20deg) scale(.3)}to{transform:none}}
+@media(max-width:480px){.keys{grid-template-columns:1fr}.q{font-size:19px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="top"><span>🧭 นักล่าสมบัติลำดับ</span><span class="pill" id="prog"></span></div>
+  <div id="app"></div>
+</div>
+<script>
+const LV=[
+{n:"สังเกตปริศนา",ic:"🔎",intro:"แต่ละกล่องมีชุดจำนวนลึกลับ ลองหาว่ามันเรียงกันตามกฎอะไร",qs:[
+ {q:"ชุดจำนวนนี้เรียงตามกฎอะไร แล้วจำนวนถัดไปคืออะไร?",s:"2, 4, 6, 8, ___",o:["9","10","12","16"],a:1,ex:"แต่ละตัวเพิ่มขึ้นทีละ 2 (บวก 2 ทุกครั้ง) ดังนั้นตัวถัดไปคือ 8 + 2 = 10"},
+ {q:"ชุดจำนวนนี้เรียงตามกฎอะไร แล้วจำนวนถัดไปคืออะไร?",s:"3, 6, 12, 24, ___",o:["30","36","48","27"],a:2,ex:"แต่ละตัวเป็น 2 เท่าของตัวก่อนหน้า (คูณ 2) ดังนั้นตัวถัดไปคือ 24 × 2 = 48"},
+ {q:"ชุดจำนวนนี้เรียงตามกฎอะไร แล้วจำนวนถัดไปคืออะไร?",s:"1, 4, 9, 16, ___",o:["20","24","25","36"],a:2,ex:"มันคือกำลังสองของ 1, 2, 3, 4 ตามลำดับ ตัวถัดไปคือ 5² = 25"}]},
+{n:"ตามล่าตำแหน่ง",ic:"📍",intro:"พจน์แต่ละตัวมี “ตำแหน่ง” n ของมัน ใช้สูตรหาค่าพจน์ที่ต้องการได้เลย",qs:[
+ {q:"ลำดับหนึ่งมีสูตรพจน์ทั่วไป aₙ = 3n + 1 พจน์ที่ 5 (a₅) เท่ากับเท่าไร?",s:"",o:["15","16","18","14"],a:1,ex:"แทน n = 5 ได้ a₅ = 3(5) + 1 = 16"},
+ {q:"ลำดับ 5, 10, 15, 20, ... มีสูตร aₙ = 5n พจน์ที่ 10 เท่ากับเท่าไร?",s:"",o:["50","15","55","100"],a:0,ex:"แทน n = 10 ได้ a₁₀ = 5 × 10 = 50"},
+ {q:"ลำดับหนึ่งมี aₙ = n² − 1 พจน์ที่ 4 (a₄) เท่ากับเท่าไร?",s:"",o:["16","17","12","15"],a:3,ex:"แทน n = 4 ได้ a₄ = 4² − 1 = 16 − 1 = 15"}]},
+{n:"เปิดเผยความลับ",ic:"🗝️",intro:"ด่านสุดท้าย! ใช้สิ่งที่สังเกตมา สรุปว่า “ลำดับ” คืออะไรกันแน่",qs:[
+ {q:"ในทางคณิตศาสตร์ ลำดับ (sequence) คืออะไร?",s:"",o:["ฟังก์ชันที่มีโดเมนเป็นเซตของจำนวนเต็มบวก","ผลบวกของจำนวนหลายๆ ตัว","ฟังก์ชันที่มีโดเมนเป็นเซตของจำนวนจริง","กลุ่มจำนวนที่ไม่มีกฎเกณฑ์"],a:0,ex:"ลำดับคือฟังก์ชันที่โดเมนเป็นเซตของจำนวนเต็มบวก (n = 1, 2, 3, ...) และเรียกค่าฟังก์ชัน a(n) ว่า aₙ ซึ่งก็คือ “พจน์ที่ n”"},
+ {q:"ลำดับ 2, 4, 6, ..., 20 เป็นลำดับแบบไหน?",s:"",o:["ลำดับอนันต์","ลำดับจำกัด","ไม่ใช่ลำดับ","เป็นได้ทั้งสองแบบ"],a:1,ex:"ลำดับนี้หยุดที่ 20 มีจำนวนพจน์จำกัด จึงเป็นลำดับจำกัด ส่วนลำดับที่มีพจน์ไม่สิ้นสุดเรียกว่าลำดับอนันต์"}]}];
+const CH=[["🦊","เทอร์มี่","T₁"],["🐻","ทิมโม่","T₂"],["🦉","ทอร่า","T₃"]];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const $=id=>document.getElementById(id);
+let L=0,pool=[],opened=[],done=0,total=8,cur=null;
+const chars=()=>'<div class="chars">'+CH.map(c=>`<div class="ch"><span class="e">${c[0]}</span><span class="t">${c[2]}</span> ${c[1]}</div>`).join("")+'</div>';
+const say=(i,t)=>`<div class="say"><span class="e">${CH[i][0]}</span><div><b>${CH[i][1]}:</b> ${t}</div></div>`;
+const app=h=>{$("app").innerHTML=h;$("prog").textContent=`🧰 เปิดแล้ว ${done}/${total}`};
+
+function start(){L=0;done=0;app(`<div class="card"><h1>🏝️ ภารกิจนักล่าสมบัติ</h1>${chars()}
+<p>ยินดีต้อนรับนักผจญภัย! เราคือทีม <b>T-Terms</b> ผู้พิทักษ์ “พจน์” ทั้งสาม ประตูโบราณถูกล็อกไว้ ต้องไขปริศนา 3 ด่านถึงจะเปิดได้ว่า <b>ลำดับ</b> คืออะไร</p>
+${say(0,"ไม่ต้องกลัวผิดนะ ถ้าพลาดเรามีคำอธิบายให้ แล้วไปต่อด้วยกันได้เสมอ!")}
+<button class="btn" onclick="level(0)">🚀 เริ่มการผจญภัย</button></div>`)}
+
+function level(i){L=i;pool=sh(LV[i].qs);opened=pool.map(()=>false);map()}
+function map(){const d=LV[L];
+ app(`<div class="card"><h2>${d.ic} ด่านที่ ${L+1}: ${d.n}</h2>${chars()}${say(L,d.intro)}
+ <p style="text-align:center"><b>เลือกกล่องสมบัติเพื่อเปิดดูปริศนา</b></p>
+ <div class="chests">${pool.map((_,k)=>`<button class="chest ${opened[k]?"done":""}" ${opened[k]?"disabled":""} onclick="openChest(${k})">${opened[k]?"📭":"🎁"}</button>`).join("")}</div>
+ <div class="bar"><i style="width:${done/total*100}%"></i></div></div>`)}
+
+function openChest(k){opened[k]=true;cur=pool[k];
+ const opts=sh(cur.o.map((t,i)=>({t,ok:i==cur.a})));cur.sh=opts;
+ app(`<div class="card"><div class="big">🎁✨</div><h2 style="text-align:center">กล่องเปิดแล้ว!</h2>
+ <div class="q">${cur.q}${cur.s?`<span class="seq">${cur.s}</span>`:""}</div>
+ <p style="margin-top:12px"><b>🗝️ เลือกกุญแจที่ใช่:</b></p>
+ <div class="keys">${opts.map((o,i)=>`<button class="key" onclick="pick(${i})">🗝️ ${o.t}</button>`).join("")}</div><div id="fb"></div></div>`)}
+
+function pick(i){const ks=[...document.querySelectorAll(".key")];ks.forEach(b=>b.disabled=true);
+ const ok=cur.sh[i].ok;ks[i].classList.add(ok?"right":"miss");
+ if(!ok)ks[cur.sh.findIndex(o=>o.ok)].classList.add("right");
+ done++;$("prog").textContent=`🧰 เปิดแล้ว ${done}/${total}`;
+ const last=opened.every(x=>x);
+ const next=last?(L<2?`<button class="btn" onclick="clear_()">✨ ผ่านด่านนี้แล้ว!</button>`:`<button class="btn" onclick="win()">🚪 ไปที่ประตูลับ</button>`):`<button class="btn" onclick="map()">➡️ ไปกล่องถัดไป</button>`;
+ $("fb").innerHTML=ok?`<div class="fb ok"><b>🎉 ยอดเยี่ยม! กุญแจนี้ใช่เลย!</b><p>${cur.ex}</p></div>${next}`
+ :`<div class="fb no"><b>💪 เกือบแล้ว! ไม่เป็นไร ทบทวนด้วยกันนะ</b><p>${cur.ex}</p><p>ความผิดพลาดคือบันไดสู่ความเข้าใจ เก็บไว้เป็นข้อสังเกตแล้วลุยต่อ!</p></div>${next}`}
+
+function clear_(){app(`<div class="card"><div class="big">🏅</div><h2 style="text-align:center">ผ่านด่านที่ ${L+1} แล้ว!</h2>${chars()}
+ ${say(L,"เก่งมาก! พร้อมไปด่านต่อไปหรือยัง?")}<div class="bar"><i style="width:${done/total*100}%"></i></div>
+ <button class="btn" onclick="level(${L+1})">➡️ ไปด่านที่ ${L+2}</button></div>`)}
+
+function win(){app(`<div class="card"><div class="door">🚪</div><h1 style="text-align:center">🎊 ประตูเปิดแล้ว!</h1>${chars()}
+ <p style="text-align:center"><b>คุณค้นพบความลับของ “ลำดับ” แล้ว!</b></p>
+ <div class="def">📌 <b>ลำดับ</b> คือฟังก์ชันที่มีโดเมนเป็นเซตของจำนวนเต็มบวก เขียนแทนด้วย a₁, a₂, a₃, ..., aₙ, ...</div>
+ <div class="def">📍 <b>aₙ</b> คือ “พจน์ที่ n” ใช้ n บอกตำแหน่ง และสูตร aₙ ช่วยหาค่าของพจน์ได้</div>
+ <div class="def">🔢 ถ้ามีจำนวนพจน์จำกัด เรียก <b>ลำดับจำกัด</b> ถ้าไม่สิ้นสุด เรียก <b>ลำดับอนันต์</b></div>
+ ${say(2,"ขอบคุณที่ร่วมทีมกับเรา! ต่อไปไปสำรวจ “อนุกรม” กันเลย 🌟")}
+ <button class="btn" onclick="start()">🔄 เล่นอีกรอบ</button></div>`)}
+start();
+</script>
+</body>
+</html>
